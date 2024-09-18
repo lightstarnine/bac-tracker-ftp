@@ -1,4 +1,13 @@
 {
+  "ftp": {
+    "enabled": true,
+    "remote_world_path": "world/",
+    "host": "",
+    "port": 21,
+    "username": "",
+    "password": ""
+  },
+
   "spreadsheet-link": "",
   "path_to_world": "world",
   "URL": "http://127.0.0.1/",
@@ -35,14 +44,5 @@
       "status_range": "D2:D",
       "who_range": "C2:C"
     }
-  },
-
-  "ftp": {
-    "enabled": true,
-    "host": "",
-    "port": 21,
-    "username": "",
-    "password": "",
-    "remote_world_path": "world/"
   }
 }
