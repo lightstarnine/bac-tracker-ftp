@@ -1,12 +1,14 @@
-# bac-tracker
+# BAC Tracker
 A tracker for Blaze and Caves Minecraft advancement pack. The tracker manages and puts all advancements in a google spreadsheet.
 This branch of the tracker offers FTP support for multiplayer servers on external hosts.
 It modifies the original code to download the necessary files from the server via FTP and creates a mock `world` folder within the tracker directory to read from.
+I developped this on macOS so I can't offer exe support like the normal tracker.\
+
 This branch does *not* support SFTP. For SFTP support check out Pikachu's branch [here](https://github.com/p1k0chu/bac-tracker)
 
 # Installation Instructions
-Download bac-tracker.zip from [latest release](https://github.com/TheTalkingMime/bac-tracker/releases).
-
+~~Download bac-tracker.zip from [latest release](https://github.com/TheTalkingMime/bac-tracker/releases).~~
+Download source code.
 1. Unzip `bac-tracker.zip` You should have a data folder, settings folder, and an exe
 2. Get a credentials json by following the instructions [here](https://www.youtube.com/watch?v=KIAo3Lgsk_Q), you only need to watch until 1:40 in the video. The rest of the video is specific to reset-tracker.
 3. Put that json into the settings folder
@@ -21,7 +23,7 @@ Download bac-tracker.zip from [latest release](https://github.com/TheTalkingMime
 12. Your server should provide you with a host URL, username, and password for FTP access.
 Paste those fields into `host`, `username`, and `password` in `settings.json`. Modify the value for `port` if necessary (most servers deafault to 21).
   - If for whatever reason you want to use this branch on a singleplayer world, set `["ftp"]["enabled"]` to `false` and it will run as normal.
-13. Run tracker.exe and hope it all works
+13. ~~Run tracker.exe and hope it all works~~
   - You can also run the tracker via the source code. Useful for running on macOS or Linux.
     a. Download the source code, or clone the repository.
     b. Configure `settings.json` and `credentials.json` as normal.
