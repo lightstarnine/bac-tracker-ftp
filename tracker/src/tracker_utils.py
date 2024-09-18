@@ -6,9 +6,93 @@ from overlay import Overlay
 from scoreboard import Scoreboard
 from utils import log_function_call
 import logging
+from ftplib import FTP
+import os
+import time
 
 logger = logging.getLogger(__name__)
 
+
+@log_function_call
+def ftpDownload(settings, world_path):
+    for directory_path in ["advancements", "stats", "data"]:
+        directory_path = os.path.join(world_path, directory_path)
+
+        os.makedirs(directory_path, exist_ok=True)
+
+        # Clear all files
+        files = os.listdir(directory_path)
+
+        for file in files:
+            file_path = os.path.join(directory_path, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+    remote_path = settings['ftp']['remote_world_path']
+
+    # Connect via FTP
+    logger.info("Downloading files from server via FTP")
+
+    start_time = time.time()
+
+    ftp = FTP(settings['ftp']['host'])
+    ftp.login(
+        user=settings['ftp']['username'],
+        passwd=settings['ftp']['password']
+    )
+
+    ftp.cwd(remote_path)
+
+    # Download advancement jsons
+    ftp.cwd('advancements')
+
+    files = ftp.nlst()
+
+    for fname in files:
+        if fname.endswith(".json"):
+            logger.debug("Downloading advancements/" + fname + " from server")
+            local_path = os.path.join(world_path, 'advancements', fname)
+            with open(local_path, 'wb') as f:
+                ftp.retrbinary('RETR ' + fname, f.write)
+
+    adv_split = time.time() - start_time
+
+    # Download stat jsons
+    ftp.cwd('../stats')
+    files = ftp.nlst()
+
+    for fname in files:
+        if fname.endswith(".json"):
+            logger.debug("Downloading stats/" + fname + " from server")
+            local_path = os.path.join(world_path, 'stats', fname)
+            with open(local_path, 'wb') as f:
+                ftp.retrbinary('RETR ' + fname, f.write)
+
+    stat_split = time.time() - start_time - adv_split
+
+    # Download scoreboard.dat
+    ftp.cwd('../data')
+    while not is_file_stable(ftp, 'scoreboard.dat'):
+        logger.debug("Checking file stability for scoreboard.dat")
+
+    data_split = time.time() - start_time - adv_split - stat_split
+
+    local_path = os.path.join(world_path, 'data/scoreboard.dat')
+    with open(local_path, 'wb') as f:
+        logger.debug("Downloading scoreboard.dat from server")
+        ftp.retrbinary('RETR scoreboard.dat', f.write)
+
+    ftp.quit()
+
+    logger.info("Download completed in %s seconds.", time.time() - start_time)
+
+
+def is_file_stable(ftp, fname, check_interval=0.2):
+    # Check if the file size remains stable
+    initial_size = ftp.size(fname)
+    time.sleep(check_interval)
+    final_size = ftp.size(fname)
+    return initial_size == final_size
 
 
 @log_function_call
@@ -85,7 +169,7 @@ def check_stats(stat_tracker):
 
 # Update spreadsheet calls
 
-@log_function_call     
+@log_function_call
 def update_first_completions(sheets_manager, log_output):
     if not (log_output is None or sheets_manager is None):
         return sheets_manager.update_first_completions(log_output)
@@ -94,8 +178,8 @@ def update_first_completions(sheets_manager, log_output):
 def check_scoreboard(scoreboard):
     if scoreboard:
         return scoreboard.check()
-  
-@log_function_call  
+
+@log_function_call
 def update_advancement_progress(sheets_manager, adv_data):
     if sheets_manager and adv_data:
         return sheets_manager.update_advancement_progress(adv_data)
@@ -106,7 +190,7 @@ def update_advancement_progress(sheets_manager, adv_data):
 def update_item_progress(sheets_manager, item_data):
     if sheets_manager and item_data:
         return sheets_manager.update_item_progress(item_data)
-    
+
 @log_function_call
 def update_stat_progress(sheets_manager, stats_data, scoreboard_data):
     if sheets_manager:

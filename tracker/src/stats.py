@@ -24,8 +24,12 @@ class Statistics:
         stats_files = os.listdir(self.statistics_path)
 
         for file in stats_files:
+            if not file.endswith('.json'):
+                logger.warning("Found non JSON file in stats")
+                continue
+
             uuid = file[:-5]
-            
+
             current_stats = self.read_stats_file(file)
 
             for statistic in self.statistics:
@@ -41,7 +45,7 @@ class Statistics:
         for stat in stats:
             logger.debug(f"{stat}: {stats[stat]}")
         return stats
-    
+
     @retry_on_exception(json.decoder.JSONDecodeError)
     def read_stats_file(self, filename):
         with open(os.path.join(self.statistics_path, filename)) as f:
