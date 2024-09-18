@@ -9,14 +9,14 @@ This branch does *not* support SFTP. For SFTP support check out Pikachu's branch
 # Installation Instructions
 ~~Download bac-tracker.zip from [latest release](https://github.com/TheTalkingMime/bac-tracker/releases).~~
 Download source code.
-1. Unzip `bac-tracker.zip` You should have a data folder, settings folder, and an exe
+1. Unzip `bac-tracker.zip`. You should have a `data` folder, `settings` folder, and an `src` folder.
 2. Get a credentials json by following the instructions [here](https://www.youtube.com/watch?v=KIAo3Lgsk_Q), you only need to watch until 1:40 in the video. The rest of the video is specific to reset-tracker.
 3. Put that json into the settings folder
 4. Rename that json to `credentials.json`
 5. Make a copy of the [1.21 Template](https://docs.google.com/spreadsheets/d/1Gyp1atdQ7QLEWRHBQ2AQFaTcg38jzZFPvaCOE4OeJhI/edit?gid=37686975#gid=37686975)
 6. Open `credentials.json`
 7. Inside you will find a field called `"client_email"` copy the associated value, and share it with your spreadsheet.
-8. Open `settings.json`
+8. Rename `sample_settings.json` to `settings.json`. Open `settings.json`. 
 9. Copy the spreadsheet link and paste it in between the quotation marks for the `"spreadsheet-link"` field.
 10. Navigate to your server file panel. Copy the full world file path. (Ex: `/default/world/`)
 11. Paste the file path into the `settings.json` value for `"remote_world_path"`.
