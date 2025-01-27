@@ -1,4 +1,8 @@
+# This tracker is outdated
+Use this [mod](https://github.com/p1k0chu/bac-tracker-mod) instead.
+
 # BAC Tracker
+
 A tracker for Blaze and Caves Minecraft advancement pack. The tracker manages and puts all advancements in a google spreadsheet.
 This branch of the tracker offers FTP support for multiplayer servers on external hosts.
 It modifies the original code to download the necessary files from the server via FTP and creates a mock `world` folder within the tracker directory to read from.
